@@ -1,14 +1,15 @@
+import { Toaster } from "@/components/ui/toaster";
 import { Header } from "@/components/header";
-import { ClerkProvider } from "@clerk/nextjs";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <ClerkProvider>
+        <>
             <div className="w-full h-full">
                 <Header />
-                {children}
+                <div className="pt-20 w-full h-full">{children}</div>
             </div>
-        </ClerkProvider>
+            <Toaster />
+        </>
     );
 };
 

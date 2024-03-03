@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { auth, SignIn } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
 const MainPage = () => {
-    // const { user } = auth();
+    const { userId } = auth();
 
-    // if(user) {
-    //     redirect("/dashboard")
-    // }
+    if (userId) {
+        redirect("/dashboard");
+    }
 
     return (
-        <div className="w-full h-full pt-20 px-4 max-w-6xl">
+        <div className="w-full h-full px-4 max-w-6xl  mx-auto">
             {/* Info section */}
             <div className="w-full h-full flex items-center justify-center">
                 <div className="flex flex-col gap-y-3 md:gap-y-4  justify-center w-[90%] h-full text-center">
