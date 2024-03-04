@@ -5,8 +5,6 @@ interface DocumentPageProps {
 }
 
 const DocumentPage = ({ params }: DocumentPageProps) => {
-    console.log({ params });
-
     return <div>document page</div>;
 };
 

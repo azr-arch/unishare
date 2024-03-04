@@ -1,7 +1,6 @@
 import { ConvexError, v } from "convex/values";
 import { MutationCtx, QueryCtx, mutation, query } from "./_generated/server";
 import { fileTypes } from "./schema";
-import { GenericMutationCtx } from "convex/server";
 
 export const generateUploadUrl = mutation(async (ctx) => {
     return await ctx.storage.generateUploadUrl();
@@ -10,7 +9,6 @@ export const generateUploadUrl = mutation(async (ctx) => {
 const getUser = async (ctx: QueryCtx | MutationCtx) => {
     try {
         const identity = await ctx.auth.getUserIdentity();
-        console.log(identity);
 
         if (!identity) return null;
 
@@ -35,7 +33,6 @@ export const createFile = mutation({
     },
     handler: async (ctx, args) => {
         const user = await getUser(ctx);
-        console.log({ user });
 
         if (!user) throw new ConvexError("You are not allowed to perfom this action");
 
@@ -51,6 +48,7 @@ export const createFile = mutation({
 export const getFiles = query({
     args: {},
     handler: async (ctx, args) => {
-        return ctx.db.query("file").collect();
+        // Todo add auth, for fetching only the logged in user files
+        return await ctx.db.query("file").collect();
     },
 });

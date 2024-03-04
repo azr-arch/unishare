@@ -11,7 +11,6 @@ export default defineSchema({
     file: defineTable({
         name: v.string(),
         type: fileTypes,
-        // url: v.string(),
         fileId: v.id("_storage"),
         user: v.id("users"),
     }),

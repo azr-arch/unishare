@@ -23,6 +23,7 @@ import { useToast } from "../ui/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useState } from "react";
 
 const formSchema = z.object({
     title: z.string().min(3, {
@@ -87,51 +88,49 @@ export const FileUploadModal = () => {
                 <Button>Upload</Button>
             </DialogTrigger>
             <DialogContent>
-                <DialogHeader>
-                    <DialogTitle className="mb-6">Upload your file</DialogTitle>
-                    <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                            <FormField
-                                control={form.control}
-                                name="title"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Title</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                disabled={form.formState.isSubmitting}
-                                                type="text"
-                                                {...field}
-                                            />
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="file"
-                                render={() => (
-                                    <FormItem>
-                                        <FormLabel>File</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                disabled={form.formState.isSubmitting}
-                                                type="file"
-                                                {...fileRef}
-                                            />
-                                        </FormControl>
+                <DialogTitle className="mb-5">Upload your file</DialogTitle>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                        <FormField
+                            control={form.control}
+                            name="title"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Title</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            disabled={form.formState.isSubmitting}
+                                            type="text"
+                                            {...field}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="file"
+                            render={() => (
+                                <FormItem>
+                                    <FormLabel>File</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            disabled={form.formState.isSubmitting}
+                                            type="file"
+                                            {...fileRef}
+                                        />
+                                    </FormControl>
 
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <Button disabled={form.formState.isSubmitting} type="submit">
-                                Submit
-                            </Button>
-                        </form>
-                    </Form>
-                </DialogHeader>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <Button disabled={form.formState.isSubmitting} type="submit">
+                            Submit
+                        </Button>
+                    </form>
+                </Form>
             </DialogContent>
         </Dialog>
     );
