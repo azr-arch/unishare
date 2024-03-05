@@ -52,3 +52,7 @@ export const getFiles = query({
         return await ctx.db.query("file").collect();
     },
 });
+
+// export const getFileById = query({
+
+// })

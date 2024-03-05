@@ -6,6 +6,10 @@ const nextConfig = {
                 hostname: "third-fennec-982.convex.cloud",
                 protocol: "https",
             },
+            {
+                hostname: "localhost",
+                protocol: "http",
+            },
         ],
     },
 };
