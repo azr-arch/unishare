@@ -1,30 +1,27 @@
 "use client";
 
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { MoreVertical } from "lucide-react";
+import { FileActions } from "@/components/file-actions";
 
-export const FileItemActions = () => {
+interface FileItemActionsProps {
+    url?: string;
+    id?: string;
+}
+
+export const FileItemActions = ({ url, id }: FileItemActionsProps) => {
+    // Todo complete this
+    const onCopy = () => {};
+    const onShare = () => {};
+    const onDelete = () => {};
+
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger>
-                <MoreVertical className="w-4 h-4" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent 
-                >
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Team</DropdownMenuItem>
-                <DropdownMenuItem>Subscription</DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <FileActions
+            side="bottom"
+            sideOffset={-20}
+            align="end"
+            alignOffset={20}
+            onCopy={onCopy}
+            onShare={onShare}
+            onDelete={onDelete}
+        />
     );
 };

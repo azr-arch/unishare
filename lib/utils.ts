@@ -13,3 +13,5 @@ export const getWithinUrl = (fileId: string) => {
     // Change this to using env
     return `http://localhost:3000/${fileId}`;
 };
+
+export const ICON_STYLES = "w-4 h-4 mr-2";

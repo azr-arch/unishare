@@ -27,7 +27,7 @@ export const FileItem = ({ data }: { data: Doc<"file"> }) => {
             </CardContent>
             <CardFooter className="flex items-center justify-between">
                 <p className="text-base font-medium">{data.name}</p>
-                <FileItemActions />
+                <FileItemActions url={href} id={data._id} />
             </CardFooter>
         </Card>
     );
