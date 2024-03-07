@@ -53,6 +53,32 @@ export const getFiles = query({
     },
 });
 
-// export const getFileById = query({
+export const deleteFile = mutation({
+    args: {
+        fileId: v.string(),
+    },
+    handler: async (ctx, { fileId }) => {
+        const user = await getUser(ctx);
 
-// })
+        if (!user) throw new ConvexError("Unauthorized request.");
+
+        const selectedFile = await ctx.db
+            .query("file")
+            .filter((q) => q.eq(q.field("_id"), fileId))
+            .first();
+
+        // Check if the file is uploaded by current user
+        if (!selectedFile || selectedFile.user !== user._id) {
+            throw new ConvexError("Unauthorized access.");
+        }
+
+        // delete the file document
+        // await ctx.db.delete(selectedFile._id);
+        // await ctx.storage.delete(selectedFile.fileId);
+        // empyting the storage too!
+        await Promise.all([
+            ctx.db.delete(selectedFile._id),
+            ctx.storage.delete(selectedFile.fileId),
+        ]);
+    },
+});

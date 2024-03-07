@@ -9,9 +9,9 @@ export const getFileUrl = (fileId: string) => {
     return `${process.env.NEXT_PUBLIC_CONVEX_URL}/api/storage/${fileId}`;
 };
 
-export const getWithinUrl = (fileId: string) => {
+export const createUrl = (fileId: string) => {
     // Change this to using env
-    return `http://localhost:3000/${fileId}`;
+    return `${process.env.NEXT_PUBLIC_URL}/${fileId}`;
 };
 
 export const ICON_STYLES = "w-4 h-4 mr-2";

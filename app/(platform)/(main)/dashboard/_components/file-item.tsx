@@ -7,12 +7,12 @@ import { Doc } from "@/convex/_generated/dataModel";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
-import { getFileUrl, getWithinUrl } from "@/lib/utils";
+import { getFileUrl, createUrl } from "@/lib/utils";
 import { FileItemActions } from "./file-item-actions";
 
 export const FileItem = ({ data }: { data: Doc<"file"> }) => {
     const url = useMemo(() => getFileUrl(data.fileId), [data.fileId]); // Storage url
-    const href = useMemo(() => getWithinUrl(data.fileId), [data.fileId]); // Link to file (fileId) page
+    const href = useMemo(() => createUrl(data.fileId), [data.fileId]); // Link to file (fileId) page
 
     return (
         <Card>
