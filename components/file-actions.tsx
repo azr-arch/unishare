@@ -20,6 +20,7 @@ interface ActionsProps {
     onCopy?: () => void;
     onDelete?: () => void;
     onShare?: () => void;
+    loading?: boolean;
 }
 
 export const FileActions = ({
@@ -30,6 +31,7 @@ export const FileActions = ({
     onCopy,
     onDelete,
     onShare,
+    loading,
 }: ActionsProps) => {
     const [open, setOpen] = useState(false);
 
@@ -43,7 +45,12 @@ export const FileActions = ({
 
     return (
         <>
-            <AlertModal isOpen={open} onClose={closeConfirmModal} onConfirm={onDelete} />
+            <AlertModal
+                isOpen={open}
+                onClose={closeConfirmModal}
+                onConfirm={onDelete}
+                loading={loading}
+            />
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <MoreVertical className="w-4 h-4 cursor-pointer" />

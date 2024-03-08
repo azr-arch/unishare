@@ -53,6 +53,22 @@ export const getFiles = query({
     },
 });
 
+export const getFileById = query({
+    args: {
+        fileId: v.string(),
+    },
+    handler: async (ctx, args) => {
+        const user = await getUser(ctx);
+
+        const file = await ctx.db
+            .query("file")
+            .filter((q) => q.eq(q.field("fileId"), args.fileId))
+            .first();
+
+        return { ...file, uploadedBy: user?.name };
+    },
+});
+
 export const deleteFile = mutation({
     args: {
         fileId: v.string(),

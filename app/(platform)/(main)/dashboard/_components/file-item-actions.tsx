@@ -4,6 +4,7 @@ import { deleteAction } from "@/actions/delete-file";
 import { FileActions } from "@/components/file-actions";
 import { toast } from "@/components/ui/use-toast";
 import { Id } from "@/convex/_generated/dataModel";
+import { useState } from "react";
 
 interface FileItemActionsProps {
     url?: string;
@@ -11,7 +12,8 @@ interface FileItemActionsProps {
 }
 
 export const FileItemActions = ({ url, id }: FileItemActionsProps) => {
-    // Todo complete this
+    const [isLoading, setIsLoading] = useState(false);
+
     const onCopy = () => {
         navigator.clipboard.writeText(url!);
         toast({
@@ -37,10 +39,17 @@ export const FileItemActions = ({ url, id }: FileItemActionsProps) => {
         }
     };
 
-    const onDelete = () => {
+    const onDelete = async () => {
+        setIsLoading(true);
         // Delete action
         if (!id) return;
-        deleteAction({ id });
+        try {
+            await deleteAction({ id });
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -52,6 +61,7 @@ export const FileItemActions = ({ url, id }: FileItemActionsProps) => {
             onCopy={onCopy}
             onShare={onShare}
             onDelete={onDelete}
+            loading={isLoading}
         />
     );
 };

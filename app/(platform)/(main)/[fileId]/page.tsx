@@ -1,5 +1,6 @@
-import { getFileUrl } from "@/lib/utils";
 import { DocumentPlaceholder } from "./_components/document-placeholder";
+import { preloadQuery } from "convex/nextjs";
+import { api } from "@/convex/_generated/api";
 
 interface DocumentPageProps {
     params: {
@@ -7,10 +8,9 @@ interface DocumentPageProps {
     };
 }
 
-const DocumentPage = ({ params }: DocumentPageProps) => {
-    const fileUrl = getFileUrl(params.fileId);
-
-    return <DocumentPlaceholder link={fileUrl} />;
+const DocumentPage = async ({ params }: DocumentPageProps) => {
+    const preloadedFile = await preloadQuery(api.file.getFileById, { fileId: params.fileId });
+    return <DocumentPlaceholder preloadedData={preloadedFile} />;
 };
 
 export default DocumentPage;
