@@ -21,10 +21,10 @@ export const FileItemActions = ({ url, id }: FileItemActionsProps) => {
         });
     };
 
+    // Make this functionality a separate component
     const onShare = async () => {
         // Share functionality
         try {
-            console.log("l");
             await navigator.share({
                 title: "Hey, check out this amazing file I found on UniShare: File. You can view it here: ${url}",
                 url: url,

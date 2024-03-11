@@ -15,3 +15,23 @@ export const createUrl = (fileId: string) => {
 };
 
 export const ICON_STYLES = "w-4 h-4 mr-2";
+
+export function calculateDaysRemaining(startDate: number) {
+    const endDate = new Date(startDate);
+    endDate.setDate(endDate.getDate() + 15); // Add 15 days to the start date
+
+    return endDate.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+
+    // For returning exact days remaining
+    // if (now > endDate) {
+    //     return 0; // The period has already ended
+    // } else {
+    //     const timeDifference = endDate.getTime() - now.getTime();
+    //     const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    //     return daysRemaining;
+    // }
+}
