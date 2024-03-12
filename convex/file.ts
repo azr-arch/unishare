@@ -1,7 +1,12 @@
 import { ConvexError, v } from "convex/values";
 import { MutationCtx, QueryCtx, mutation, query } from "./_generated/server";
 import { fileTypes } from "./schema";
-import { CustomFile } from "../lib/types";
+import { Doc } from "./_generated/dataModel";
+
+export interface CustomFile {
+    file: Doc<"file"> | null;
+    uploadedBy: Doc<"users"> | null;
+}
 
 export const generateUploadUrl = mutation(async (ctx) => {
     return await ctx.storage.generateUploadUrl();
@@ -69,7 +74,10 @@ export const getFileById = query({
             .filter((q) => q.eq(q.field("_id"), file?.user))
             .first();
 
-        return { ...file, uploadedBy };
+        return {
+            file,
+            uploadedBy,
+        };
     },
 });
 
@@ -92,13 +100,8 @@ export const deleteFile = mutation({
             throw new ConvexError("Unauthorized access.");
         }
 
-        // delete the file document
-        // await ctx.db.delete(selectedFile._id);
-        // await ctx.storage.delete(selectedFile.fileId);
         // empyting the storage too!
-        await Promise.all([
-            ctx.db.delete(selectedFile._id),
-            ctx.storage.delete(selectedFile.fileId),
-        ]);
+        await ctx.storage.delete(selectedFile.fileId);
+        return await ctx.db.delete(selectedFile._id);
     },
 });

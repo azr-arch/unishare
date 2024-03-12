@@ -1,24 +1,60 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Download, ArrowUpRight, MoreHorizontal, MoreVertical } from "lucide-react";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Doc } from "@/convex/_generated/dataModel";
 import Image from "next/image";
-import Link from "next/link";
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { getFileUrl, createUrl } from "@/lib/utils";
-import { FileItemActions } from "./file-item-actions";
+import { toast } from "@/components/ui/use-toast";
+import { deleteAction } from "@/actions/delete-file";
+import { FileActions } from "@/components/file-actions";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 export const FileItem = ({ data }: { data: Doc<"file"> }) => {
-    const url = useMemo(() => getFileUrl(data.fileId), [data.fileId]); // Storage url
+    const [isLoading, setIsLoading] = useState(false);
+    const deleteFileMutation = useMutation(api.file.deleteFile);
+
     const href = useMemo(() => createUrl(data.fileId), [data.fileId]); // Link to file (fileId) page
+    const url = useMemo(() => getFileUrl(data.fileId), [data.fileId]); // Storage url
+
+    // Move this into separate functions
+    const onCopy = useCallback(() => {
+        navigator.clipboard.writeText(href || "");
+        toast({
+            title: "URL copied to clipboard.",
+        });
+    }, [href]);
+
+    const onDelete = useCallback(async () => {
+        setIsLoading(true);
+        // Delete action
+        if (!data._id) return;
+        try {
+            //  this approach doesnt work!
+            // await deleteAction;
+
+            await deleteFileMutation({ fileId: data._id });
+            toast({
+                title: "File deleted successfully",
+            });
+        } catch (error) {
+            console.log(error);
+            toast({
+                title: "Something went wrong!",
+                description: "Please try again later.",
+                variant: "destructive",
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }, [data._id, deleteFileMutation]);
 
     return (
         <Card>
             <CardContent>
                 <Image
-                    src={url}
+                    src={url || ""}
                     className="relative aspect-square object-cover"
                     width={180}
                     height={180}
@@ -27,7 +63,17 @@ export const FileItem = ({ data }: { data: Doc<"file"> }) => {
             </CardContent>
             <CardFooter className="flex items-center justify-between">
                 <p className="text-base font-medium">{data.name}</p>
-                <FileItemActions url={href} id={data._id} />
+
+                <FileActions
+                    side="bottom"
+                    sideOffset={-20}
+                    align="end"
+                    alignOffset={20}
+                    onCopy={onCopy}
+                    shareUrl={href}
+                    onDelete={onDelete}
+                    loading={isLoading}
+                />
             </CardFooter>
         </Card>
     );

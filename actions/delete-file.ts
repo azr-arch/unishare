@@ -1,5 +1,7 @@
 "use server";
 
+// Currently not working, instead using default approach of using `useMutation` on client side
+
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { fetchMutation } from "convex/nextjs";

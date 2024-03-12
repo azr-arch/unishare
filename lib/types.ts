@@ -1,5 +1,5 @@
-import { Doc } from "@/convex/_generated/dataModel";
+// import { Doc } from "@/convex/_generated/dataModel";
 
-export type CustomFile = Doc<"file"> & {
-    uploadedBy: Doc<"users">;
-};
+// export type CustomFile = Doc<"file"> & {
+//     uploadedBy: Doc<"users">;
+// };

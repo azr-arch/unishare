@@ -11,6 +11,7 @@ import {
 import { Clipboard, MoreVertical, Share, Trash2 } from "lucide-react";
 import { AlertModal } from "./modals/alert-modal";
 import { useState } from "react";
+import { ShareButton } from "./share";
 
 interface ActionsProps {
     side?: "left" | "right" | "bottom" | "top";
@@ -19,7 +20,7 @@ interface ActionsProps {
     alignOffset?: number;
     onCopy?: () => void;
     onDelete?: () => void;
-    onShare?: () => void;
+    shareUrl?: string;
     loading?: boolean;
 }
 
@@ -30,7 +31,7 @@ export const FileActions = ({
     alignOffset,
     onCopy,
     onDelete,
-    onShare,
+    shareUrl,
     loading,
 }: ActionsProps) => {
     const [open, setOpen] = useState(false);
@@ -67,9 +68,8 @@ export const FileActions = ({
                         <Clipboard className="w-4 h-4 mr-2" />
                         Copy Url
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={onShare}>
-                        <Share className="w-4 h-4  mr-2" />
-                        Share
+                    <DropdownMenuItem>
+                        <ShareButton shareUrl={shareUrl} />
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={enableConfirmModal}>
                         <Trash2 className="w-4 h-4 mr-2 " />

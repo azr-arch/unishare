@@ -1,3 +1,4 @@
+import { Id } from "@/convex/_generated/dataModel";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -5,7 +6,8 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export const getFileUrl = (fileId: string) => {
+export const getFileUrl = (fileId: Id<"_storage">) => {
+    if (!fileId) return;
     return `${process.env.NEXT_PUBLIC_CONVEX_URL}/api/storage/${fileId}`;
 };
 
@@ -16,7 +18,8 @@ export const createUrl = (fileId: string) => {
 
 export const ICON_STYLES = "w-4 h-4 mr-2";
 
-export function calculateDaysRemaining(startDate: number) {
+export function calculateDaysRemaining(startDate: number | null) {
+    if (!startDate) return null;
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + 15); // Add 15 days to the start date
 

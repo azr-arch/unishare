@@ -10,7 +10,12 @@ interface DocumentPageProps {
 
 const DocumentPage = async ({ params }: DocumentPageProps) => {
     const preloadedFile = await preloadQuery(api.file.getFileById, { fileId: params.fileId });
-    return <DocumentPlaceholder preloadedData={preloadedFile} />;
+
+    return (
+        <div className="w-full h-full flex items-center justify-center bg-neutral-200">
+            <DocumentPlaceholder preloadedData={preloadedFile} />
+        </div>
+    );
 };
 
 export default DocumentPage;
