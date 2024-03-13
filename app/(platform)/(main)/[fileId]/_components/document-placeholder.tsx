@@ -2,9 +2,11 @@
 
 import { NotFound } from "@/components/not-found";
 import { ShareButton } from "@/components/share";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { api } from "@/convex/_generated/api";
+import { useMediaDownload } from "@/hooks/use-media-download";
 import { calculateDaysRemaining, createUrl, getFileUrl } from "@/lib/utils";
 import { Preloaded, usePreloadedQuery } from "convex/react";
 import { Download, Share } from "lucide-react";
@@ -20,13 +22,15 @@ export const DocumentPlaceholder = ({ preloadedData }: DocumentPlaceholderProps)
 
     const link = useMemo(() => getFileUrl(file?.fileId!), [file?.fileId]);
     const href = useMemo(() => createUrl(file?.fileId!), [file?.fileId]);
+    const { isDownloading, downloadImage } = useMediaDownload({
+        srcUrl: link,
+        fileName: file?.name,
+    });
 
     const expiresOn = useMemo(
         () => calculateDaysRemaining(file?._creationTime || null),
         [file?._creationTime]
     );
-
-    const onDownload = () => console.log("downloading");
 
     if (!file || !uploadedBy) {
         return <NotFound />;
@@ -47,19 +51,16 @@ export const DocumentPlaceholder = ({ preloadedData }: DocumentPlaceholderProps)
                 </p>
             </div>
 
-            <div className="relative w-[70vw] max-h-[70vh] aspect-video shadow-md">
-                <Image
-                    src={link || ""}
-                    className="relative aspect-square object-cover"
-                    alt="image"
-                    fill
-                />
+            <div className="relative w-[50vw] min-w-[500px]">
+                <AspectRatio ratio={16 / 9}>
+                    <Image src={link || ""} fill className="rounded-md object-cover" alt="image" />
+                </AspectRatio>
             </div>
 
             <div className="flex items-center px-4 gap-x-6">
-                <ShareButton shareUrl={href} />
+                <ShareButton variant="default" shareUrl={href} />
 
-                <Button variant={"outline"} onClick={onDownload}>
+                <Button variant={"outline"} disabled={isDownloading} onClick={downloadImage}>
                     <Download className="w-4 h-4  mr-2" />
                     Download
                 </Button>

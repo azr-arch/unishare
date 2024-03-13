@@ -12,7 +12,7 @@ const DocumentPage = async ({ params }: DocumentPageProps) => {
     const preloadedFile = await preloadQuery(api.file.getFileById, { fileId: params.fileId });
 
     return (
-        <div className="w-full h-full flex items-center justify-center bg-neutral-200">
+        <div className="w-full h-full flex items-center justify-center ">
             <DocumentPlaceholder preloadedData={preloadedFile} />
         </div>
     );

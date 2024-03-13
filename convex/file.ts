@@ -52,10 +52,20 @@ export const createFile = mutation({
 });
 
 export const getFiles = query({
-    args: {},
-    handler: async (ctx, args) => {
+    handler: async (ctx) => {
         // Todo add auth, for fetching only the logged in user files
-        return await ctx.db.query("file").collect();
+        const user = await getUser(ctx);
+
+        if (!user) {
+            return [];
+        }
+
+        const filesOfUser = await ctx.db
+            .query("file")
+            .filter((q) => q.eq(q.field("user"), user._id))
+            .collect();
+
+        return filesOfUser;
     },
 });
 

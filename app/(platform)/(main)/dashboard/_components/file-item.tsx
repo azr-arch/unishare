@@ -10,6 +10,7 @@ import { deleteAction } from "@/actions/delete-file";
 import { FileActions } from "@/components/file-actions";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import Link from "next/link";
 
 export const FileItem = ({ data }: { data: Doc<"file"> }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -53,13 +54,15 @@ export const FileItem = ({ data }: { data: Doc<"file"> }) => {
     return (
         <Card>
             <CardContent>
-                <Image
-                    src={url || ""}
-                    className="relative aspect-square object-cover"
-                    width={180}
-                    height={180}
-                    alt={data.name}
-                />
+                <Link href={href}>
+                    <Image
+                        src={url || ""}
+                        className="relative aspect-square object-cover"
+                        width={180}
+                        height={180}
+                        alt={data.name}
+                    />
+                </Link>
             </CardContent>
             <CardFooter className="flex items-center justify-between">
                 <p className="text-base font-medium">{data.name}</p>
