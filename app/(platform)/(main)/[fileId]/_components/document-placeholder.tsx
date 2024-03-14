@@ -51,9 +51,14 @@ export const DocumentPlaceholder = ({ preloadedData }: DocumentPlaceholderProps)
                 </p>
             </div>
 
-            <div className="relative w-[50vw] min-w-[500px]">
+            <div className="relative w-[50vw] min-w-[500px] max-w-[1200px]">
                 <AspectRatio ratio={16 / 9}>
-                    <Image src={link || ""} fill className="rounded-md object-cover" alt="image" />
+                    <Image
+                        src={link || ""}
+                        fill
+                        className="rounded-md object-contain"
+                        alt="image"
+                    />
                 </AspectRatio>
             </div>
 

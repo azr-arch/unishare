@@ -1,5 +1,5 @@
 import { ConvexError, v } from "convex/values";
-import { MutationCtx, QueryCtx, mutation, query } from "./_generated/server";
+import { MutationCtx, QueryCtx, internalMutation, mutation, query } from "./_generated/server";
 import { fileTypes } from "./schema";
 import { Doc } from "./_generated/dataModel";
 
@@ -113,5 +113,43 @@ export const deleteFile = mutation({
         // empyting the storage too!
         await ctx.storage.delete(selectedFile.fileId);
         return await ctx.db.delete(selectedFile._id);
+    },
+});
+
+const hasExpired = (file: Doc<"file">) => {
+    const todaysDate = Date.now();
+    const createdDate = new Date(file._creationTime).getTime();
+
+    // Calculate the difference in milliseconds
+    const diffInMilliseconds = todaysDate - createdDate;
+
+    // Convert the difference to days
+    const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
+
+    // Check if the file is older than 7 days
+    return diffInDays > 7;
+};
+
+export const deleteExpiredFiles = internalMutation({
+    handler: async (ctx) => {
+        try {
+            // Collect all the files
+            const files = await ctx.db.query("file").collect();
+
+            // Filter out files which are older than 7 days
+            const filesToRemove = files.filter(hasExpired);
+
+            console.log("Removing expired files...");
+            // Remove the expired files
+            for (const file of filesToRemove) {
+                // Remove storage file
+                await ctx.storage.delete(file.fileId);
+                await ctx.db.delete(file._id);
+            }
+
+            console.log("All expired files are removed.");
+        } catch (error) {
+            console.error("[DEL_EXPIRED_FILES]: ", error);
+        }
     },
 });

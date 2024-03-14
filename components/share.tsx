@@ -9,9 +9,10 @@ import { createUrl } from "@/lib/utils";
 interface ShareButtonProps {
     shareUrl?: string;
     variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+    className?: string;
 }
 
-export const ShareButton = ({ shareUrl, variant = "default" }: ShareButtonProps) => {
+export const ShareButton = ({ shareUrl, variant = "default", className }: ShareButtonProps) => {
     const onShare = async () => {
         // Share functionality
         try {
@@ -30,7 +31,7 @@ export const ShareButton = ({ shareUrl, variant = "default" }: ShareButtonProps)
     };
 
     return (
-        <Button variant={variant} onClick={onShare}>
+        <Button variant={variant} className={className} onClick={onShare}>
             <Share className="w-4 h-4  mr-2" />
             Share
         </Button>

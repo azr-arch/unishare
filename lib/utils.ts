@@ -21,7 +21,7 @@ export const ICON_STYLES = "w-4 h-4 mr-2";
 export function calculateDaysRemaining(startDate: number | null) {
     if (!startDate) return null;
     const endDate = new Date(startDate);
-    endDate.setDate(endDate.getDate() + 15); // Add 15 days to the start date
+    endDate.setDate(endDate.getDate() + 7); // Add 15 days to the start date
 
     return endDate.toLocaleDateString(undefined, {
         year: "numeric",

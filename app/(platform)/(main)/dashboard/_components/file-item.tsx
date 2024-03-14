@@ -4,13 +4,15 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Doc } from "@/convex/_generated/dataModel";
 import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
-import { getFileUrl, createUrl } from "@/lib/utils";
+import { getFileUrl, createUrl, calculateDaysRemaining } from "@/lib/utils";
 import { toast } from "@/components/ui/use-toast";
 import { deleteAction } from "@/actions/delete-file";
 import { FileActions } from "@/components/file-actions";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import Link from "next/link";
+import { ExpireTooltip } from "@/components/expire-tooltip";
+import { Info } from "lucide-react";
 
 export const FileItem = ({ data }: { data: Doc<"file"> }) => {
     const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +20,10 @@ export const FileItem = ({ data }: { data: Doc<"file"> }) => {
 
     const href = useMemo(() => createUrl(data.fileId), [data.fileId]); // Link to file (fileId) page
     const url = useMemo(() => getFileUrl(data.fileId), [data.fileId]); // Storage url
+    const expiresOn = useMemo(
+        () => calculateDaysRemaining(data?._creationTime || null),
+        [data?._creationTime]
+    );
 
     // Move this into separate functions
     const onCopy = useCallback(() => {
@@ -53,7 +59,12 @@ export const FileItem = ({ data }: { data: Doc<"file"> }) => {
 
     return (
         <Card>
-            <CardContent>
+            <CardContent className="relative">
+                <ExpireTooltip
+                    className="absolute top-4 right-4 z-40 "
+                    content={expiresOn || ""}
+                    trigger={<Info className="w-3 h-3" />}
+                />
                 <Link href={href}>
                     <Image
                         src={url || ""}
