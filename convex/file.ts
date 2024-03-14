@@ -2,6 +2,7 @@ import { ConvexError, v } from "convex/values";
 import { MutationCtx, QueryCtx, internalMutation, mutation, query } from "./_generated/server";
 import { fileTypes } from "./schema";
 import { Doc } from "./_generated/dataModel";
+import { EXPIRE_FILE_DURATION } from "../lib/constants";
 
 export interface CustomFile {
     file: Doc<"file"> | null;
@@ -127,7 +128,7 @@ const hasExpired = (file: Doc<"file">) => {
     const diffInDays = diffInMilliseconds / (1000 * 60 * 60 * 24);
 
     // Check if the file is older than 7 days
-    return diffInDays > 7;
+    return diffInDays > EXPIRE_FILE_DURATION;
 };
 
 export const deleteExpiredFiles = internalMutation({
