@@ -12,7 +12,6 @@ export const getFileUrl = (fileId: Id<"_storage">) => {
 };
 
 export const createUrl = (fileId: string) => {
-    // Change this to using env
     return `${process.env.NEXT_PUBLIC_URL}/${fileId}`;
 };
 

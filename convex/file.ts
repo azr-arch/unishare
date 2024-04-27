@@ -3,6 +3,7 @@ import { MutationCtx, QueryCtx, internalMutation, mutation, query } from "./_gen
 import { fileTypes } from "./schema";
 import { Doc } from "./_generated/dataModel";
 import { EXPIRE_FILE_DURATION } from "../lib/constants";
+import { api } from "./_generated/api";
 
 export interface CustomFile {
     file: Doc<"file"> | null;
@@ -66,7 +67,12 @@ export const getFiles = query({
             .filter((q) => q.eq(q.field("user"), user._id))
             .collect();
 
-        return filesOfUser;
+        return Promise.all(
+            filesOfUser.map(async (file) => ({
+                ...file,
+                url: await ctx.storage.getUrl(file.fileId),
+            }))
+        );
     },
 });
 
@@ -74,7 +80,7 @@ export const getFileById = query({
     args: {
         fileId: v.string(),
     },
-    handler: async (ctx, args): Promise<CustomFile> => {
+    handler: async (ctx, args) => {
         const file = await ctx.db
             .query("file")
             .filter((q) => q.eq(q.field("fileId"), args.fileId))
@@ -85,9 +91,16 @@ export const getFileById = query({
             .filter((q) => q.eq(q.field("_id"), file?.user))
             .first();
 
+        let url;
+
+        if (file?.fileId) {
+            url = await ctx.storage.getUrl(file.fileId);
+        }
+
         return {
             file,
             uploadedBy,
+            url,
         };
     },
 });

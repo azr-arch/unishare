@@ -18,7 +18,7 @@ interface DocumentPlaceholderProps {
 }
 
 export const DocumentPlaceholder = ({ preloadedData }: DocumentPlaceholderProps) => {
-    const { file, uploadedBy } = usePreloadedQuery(preloadedData);
+    const { file, uploadedBy, url } = usePreloadedQuery(preloadedData);
 
     const link = useMemo(() => getFileUrl(file?.fileId!), [file?.fileId]);
     const href = useMemo(() => createUrl(file?.fileId!), [file?.fileId]);
@@ -53,12 +53,7 @@ export const DocumentPlaceholder = ({ preloadedData }: DocumentPlaceholderProps)
 
             <div className="relative w-[50vw] min-w-[500px] max-w-[1200px]">
                 <AspectRatio ratio={16 / 9}>
-                    <Image
-                        src={link || ""}
-                        fill
-                        className="rounded-md object-contain"
-                        alt="image"
-                    />
+                    <Image src={url || ""} fill className="rounded-md object-contain" alt="image" />
                 </AspectRatio>
             </div>
 

@@ -10,13 +10,14 @@ interface FileListProps {
 
 export const FileList = ({ preloadedData }: FileListProps) => {
     const data = usePreloadedQuery(preloadedData);
-
     return (
         <div className="w-full h-full px-4 py-6 flex items-center flex-wrap gap-4">
             {data.length > 0 ? (
                 data.map((item) => <FileItem data={item} key={item._id} />)
             ) : (
-                <p className="text-xl text-black font-semibold">No files found! upload one now</p>
+                <p className="text-lg text-neutral-600 font-medium">
+                    No files found! upload one now
+                </p>
             )}
         </div>
     );

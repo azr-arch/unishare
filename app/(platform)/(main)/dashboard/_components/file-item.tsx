@@ -14,12 +14,19 @@ import Link from "next/link";
 import { ExpireTooltip } from "@/components/expire-tooltip";
 import { Info } from "lucide-react";
 
-export const FileItem = ({ data }: { data: Doc<"file"> }) => {
+interface FileItemProps {
+    data: Doc<"file"> & {
+        url?: string;
+    };
+}
+
+export const FileItem = ({ data }: FileItemProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const deleteFileMutation = useMutation(api.file.deleteFile);
 
     const href = useMemo(() => createUrl(data.fileId), [data.fileId]); // Link to file (fileId) page
     const url = useMemo(() => getFileUrl(data.fileId), [data.fileId]); // Storage url
+
     const expiresOn = useMemo(
         () => calculateDaysRemaining(data?._creationTime || null),
         [data?._creationTime]
@@ -66,13 +73,15 @@ export const FileItem = ({ data }: { data: Doc<"file"> }) => {
                     trigger={<Info className="w-3 h-3" />}
                 />
                 <Link href={href}>
-                    <Image
-                        src={url || ""}
-                        className="relative aspect-square object-cover"
-                        width={180}
-                        height={180}
-                        alt={data.name}
-                    />
+                    {data?.url ? (
+                        <Image
+                            src={data.url}
+                            className="relative aspect-square object-cover"
+                            width={180}
+                            height={180}
+                            alt={data.name}
+                        />
+                    ) : null}
                 </Link>
             </CardContent>
             <CardFooter className="flex items-center justify-between">
