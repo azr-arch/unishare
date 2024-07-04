@@ -8,9 +8,9 @@ const DashboardPage = async () => {
     const preloadedFiles = await preloadQuery(api.file.getFiles);
 
     return (
-        <div className="px-4 flex flex-col items-center justify-center">
-            <div className="w-full flex justify-between items-center px-4">
-                <h1 className="text-3xl font-bold">My files</h1> <FileUploadModal />
+        <div className=" mx-auto flex flex-col items-center justify-center">
+            <div className="w-full flex justify-between items-center ">
+                <h1 className="text-2xl font-bold">Your files</h1> <FileUploadModal />
             </div>
 
             <FileList preloadedData={preloadedFiles} />

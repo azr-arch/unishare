@@ -30,8 +30,8 @@ const formSchema = z.object({
         message: "Title must be at least 3 characters.",
     }),
     file: z
-        .custom<FileList>((val) => val instanceof FileList, "Required")
-        .refine((files) => files.length > 0, "Required"),
+        .custom<FileList>((val) => val instanceof FileList, "File is required")
+        .refine((files) => files.length > 0, "Please select a file to upload"),
 });
 
 export const FileUploadModal = () => {

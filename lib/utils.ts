@@ -8,6 +8,8 @@ export function cn(...inputs: ClassValue[]) {
 
 export const getFileUrl = (fileId: Id<"_storage">) => {
     if (!fileId) return;
+
+    // const url = new URL(`${process.env.NEXT_PUBLIC_CONVEX_URL}/getImage`);
     return `${process.env.NEXT_PUBLIC_CONVEX_URL}/api/storage/${fileId}`;
 };
 

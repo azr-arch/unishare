@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "./ui/button";
-import { Share } from "lucide-react";
+import { Link, Share } from "lucide-react";
 import { toast } from "./ui/use-toast";
 import { useMemo } from "react";
-import { createUrl } from "@/lib/utils";
+import { cn, createUrl } from "@/lib/utils";
 
 interface ShareButtonProps {
     shareUrl?: string;
@@ -31,8 +31,8 @@ export const ShareButton = ({ shareUrl, variant = "default", className }: ShareB
     };
 
     return (
-        <Button variant={variant} className={className} onClick={onShare}>
-            <Share className="w-4 h-4  mr-2" />
+        <Button variant={variant} className={cn("", className)} onClick={onShare}>
+            <Link className="w-4 h-4  mr-2" />
             Share
         </Button>
     );

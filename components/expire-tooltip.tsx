@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { TooltipTrigger } from "./ui/tooltip";
 import { TooltipContent } from "./ui/tooltip";
 import { Tooltip } from "./ui/tooltip";
@@ -13,7 +14,14 @@ export const ExpireTooltip = ({ className, trigger, content }: ExpireTooltipProp
     return (
         <TooltipProvider>
             <Tooltip>
-                <TooltipTrigger className={className}>{trigger}</TooltipTrigger>
+                <TooltipTrigger
+                    className={cn(
+                        "w-4 h-4 rounded-full bg-white flex items-center justify-center",
+                        className
+                    )}
+                >
+                    {trigger}
+                </TooltipTrigger>
                 <TooltipContent>
                     <p className="text-[10px] font-medium">Expires on {content}</p>
                 </TooltipContent>

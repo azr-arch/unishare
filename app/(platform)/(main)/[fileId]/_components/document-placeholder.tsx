@@ -1,16 +1,17 @@
 "use client";
 
+import { BackButton } from "@/components/back-button";
 import { NotFound } from "@/components/not-found";
 import { ShareButton } from "@/components/share";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
 import { api } from "@/convex/_generated/api";
 import { useMediaDownload } from "@/hooks/use-media-download";
 import { calculateDaysRemaining, createUrl, getFileUrl } from "@/lib/utils";
 import { Preloaded, usePreloadedQuery } from "convex/react";
-import { Download, Share } from "lucide-react";
+import { Download } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo } from "react";
 
 interface DocumentPlaceholderProps {
@@ -19,11 +20,9 @@ interface DocumentPlaceholderProps {
 
 export const DocumentPlaceholder = ({ preloadedData }: DocumentPlaceholderProps) => {
     const { file, uploadedBy, url } = usePreloadedQuery(preloadedData);
-
-    const link = useMemo(() => getFileUrl(file?.fileId!), [file?.fileId]);
     const href = useMemo(() => createUrl(file?.fileId!), [file?.fileId]);
     const { isDownloading, downloadImage } = useMediaDownload({
-        srcUrl: link,
+        srcUrl: url!,
         fileName: file?.name,
     });
 
@@ -40,20 +39,19 @@ export const DocumentPlaceholder = ({ preloadedData }: DocumentPlaceholderProps)
         <div className="space-y-4">
             <div className="w-full flex items-end justify-between ">
                 <div>
-                    <h1 className="text-xl font-medium">{file.name}</h1>
-                    <p className="text-sm">Uploaded by {uploadedBy.name}</p>
+                    <h1 className="text-2xl font-semibold">{file.name}</h1>
+                    <div className="text-neutral-500  mt-1 font-medium text-xs md:text-sm">
+                        <p>Uploaded by {uploadedBy.name}</p>
+                        {/* <p>MP4 - 1.5GB</p> */}
+                    </div>
                 </div>
-
-                <p className="text-xs text-neutral-700 font-medium">
-                    Expires on
-                    <br />
-                    <span className="text-sm">{expiresOn}</span>
-                </p>
+                <p className="text-xs text-neutral-500 font-medium">Expires on {expiresOn}</p>
             </div>
+            <BackButton />
 
-            <div className="relative w-[50vw] min-w-[500px] max-w-[1200px]">
+            <div className="relative w-[90vw] lg:max-w-[800px] 2xl:max-w-[1200px]">
                 <AspectRatio ratio={16 / 9}>
-                    <Image src={url || ""} fill className="rounded-md object-contain" alt="image" />
+                    <Image src={url || ""} fill className="object-contain " alt="image" />
                 </AspectRatio>
             </div>
 

@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Doc } from "@/convex/_generated/dataModel";
 import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
-import { getFileUrl, createUrl, calculateDaysRemaining } from "@/lib/utils";
+import { createUrl, calculateDaysRemaining } from "@/lib/utils";
 import { toast } from "@/components/ui/use-toast";
 import { deleteAction } from "@/actions/delete-file";
 import { FileActions } from "@/components/file-actions";
@@ -25,7 +25,6 @@ export const FileItem = ({ data }: FileItemProps) => {
     const deleteFileMutation = useMutation(api.file.deleteFile);
 
     const href = useMemo(() => createUrl(data.fileId), [data.fileId]); // Link to file (fileId) page
-    const url = useMemo(() => getFileUrl(data.fileId), [data.fileId]); // Storage url
 
     const expiresOn = useMemo(
         () => calculateDaysRemaining(data?._creationTime || null),
@@ -66,7 +65,7 @@ export const FileItem = ({ data }: FileItemProps) => {
 
     return (
         <Card>
-            <CardContent className="relative">
+            <CardContent className="relative pt-5">
                 <ExpireTooltip
                     className="absolute top-4 right-4 z-40 "
                     content={expiresOn || ""}
@@ -74,13 +73,15 @@ export const FileItem = ({ data }: FileItemProps) => {
                 />
                 <Link href={href}>
                     {data?.url ? (
-                        <Image
-                            src={data.url}
-                            className="relative aspect-square object-cover"
-                            width={180}
-                            height={180}
-                            alt={data.name}
-                        />
+                        <div className="relative w-full aspect-square min-w-[180px]">
+                            <Image
+                                src={data.url}
+                                className="object-cover"
+                                fill
+                                alt={data.name}
+                                sizes="180px"
+                            />
+                        </div>
                     ) : null}
                 </Link>
             </CardContent>

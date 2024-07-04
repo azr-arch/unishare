@@ -7,6 +7,7 @@ interface useMediaDownloadProps {
     fileName?: string;
 }
 
+// TODO: Fix this not working!
 export const useMediaDownload = ({ srcUrl, fileName = "my-file.png" }: useMediaDownloadProps) => {
     const [isDownloading, setIsDownloading] = useState(false);
 
@@ -16,6 +17,11 @@ export const useMediaDownload = ({ srcUrl, fileName = "my-file.png" }: useMediaD
         try {
             setIsDownloading(true);
             const response = await fetch(srcUrl);
+
+            if (!response.ok) {
+                throw new Error("Error image, please try again later");
+            }
+
             const blob = await response.blob();
             const url = URL.createObjectURL(blob);
 

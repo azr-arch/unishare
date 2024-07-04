@@ -68,6 +68,7 @@ export const FileActions = ({
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem className={DROP_DOWN_ITEM}>
+                        {/* TODO: Move action button to their unique components */}
                         <Button
                             variant={"ghost"}
                             className="h-fit px-2 py-1.5 w-full justify-start"

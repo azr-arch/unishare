@@ -6,7 +6,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         <>
             <div className="w-full h-full">
                 <Header />
-                <div className="pt-20 w-full h-full">{children}</div>
+                <div className="py-20 px-6 w-full h-full  max-w-screen-xl mx-auto ">{children}</div>
             </div>
             <Toaster />
         </>
