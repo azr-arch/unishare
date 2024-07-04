@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Doc } from "@/convex/_generated/dataModel";
+import { Doc, Id } from "@/convex/_generated/dataModel";
 import Image from "next/image";
 import { useCallback, useMemo, useState } from "react";
 import { createUrl, calculateDaysRemaining } from "@/lib/utils";
@@ -15,8 +15,14 @@ import { ExpireTooltip } from "@/components/expire-tooltip";
 import { Info } from "lucide-react";
 
 interface FileItemProps {
-    data: Doc<"file"> & {
-        url?: string;
+    data: {
+        _id: Id<"file">;
+        _creationTime: number;
+        type: "image" | "pdf";
+        name: string;
+        fileId: Id<"_storage">;
+        user: Id<"users">;
+        url: string | null;
     };
 }
 
@@ -44,7 +50,7 @@ export const FileItem = ({ data }: FileItemProps) => {
         // Delete action
         if (!data._id) return;
         try {
-            //  this approach doesnt work!
+            //  TODO: Implement this (action)
             // await deleteAction;
 
             await deleteFileMutation({ fileId: data._id });
